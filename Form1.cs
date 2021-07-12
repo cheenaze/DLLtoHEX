@@ -49,6 +49,12 @@ namespace DLLtoHEX
             FileInfo sizebyte = new FileInfo(output);
             long size_kbyte = sizebyte.Length / 1024;
             textBox1.Text = (size_kbyte.ToString() + " Kb");
+
+            DialogResult result = MessageBox.Show("Exit?", "DLLtoHEX", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                Application.Exit();
+            }            
         }
     }
 }
