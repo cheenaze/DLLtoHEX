@@ -13,29 +13,29 @@ namespace DLLtoHEX
         }
 
         string dllPath, firstfile, secondfile, outputFolder, FileFormat, outputFile = "DLLtoHEX";
-        string[] Formats = { "", ".txt", ".cpp", ".c" };
+        readonly string[] Formats = { "", ".txt", ".cpp", ".c" };
 
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        private void RadioButton1_CheckedChanged(object sender, EventArgs e)
         {
             FileFormat = Formats[0];
         }
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        private void RadioButton2_CheckedChanged(object sender, EventArgs e)
         {
             FileFormat = Formats[1];
         }
-        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        private void RadioButton3_CheckedChanged(object sender, EventArgs e)
         {
             FileFormat = Formats[2];
         }
-        private void radioButton4_CheckedChanged(object sender, EventArgs e)
+        private void RadioButton4_CheckedChanged(object sender, EventArgs e)
         {
             FileFormat = Formats[3];
         }
 
 
-        private void setFirstFile_b_Click(object sender, EventArgs e)
+        private void SetFirstFile_b_Click(object sender, EventArgs e)
         {
-            OpenFileDialog open = new OpenFileDialog
+            OpenFileDialog open = new()
             {
                 Filter = "TXT|*.txt;"
             };
@@ -48,10 +48,10 @@ namespace DLLtoHEX
             }
         }
 
-        private void setSecondFile_b_Click(object sender, EventArgs e)
+        private void SetSecondFile_b_Click(object sender, EventArgs e)
         {
 
-            OpenFileDialog open = new OpenFileDialog
+            OpenFileDialog open = new()
             {
                 Filter = "TXT|*.txt;"
             };
@@ -64,9 +64,9 @@ namespace DLLtoHEX
             }
         }
 
-        private void setOutput_b_Click(object sender, EventArgs e)
+        private void SetOutput_b_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog open = new FolderBrowserDialog();
+            FolderBrowserDialog open = new();
             if (open.ShowDialog(this) == DialogResult.OK)
             {
                 setOutput_b.ForeColor = System.Drawing.Color.Green;
@@ -80,7 +80,7 @@ namespace DLLtoHEX
         {
             if (firstfile.Length != 0 && secondfile.Length != 0 && outputFolder.Length != 0)
             {
-                OpenFileDialog openDialog = new OpenFileDialog
+                OpenFileDialog openDialog = new()
                 {
                     Filter = "DLL|*.dll;"
                 };
@@ -93,7 +93,7 @@ namespace DLLtoHEX
                 MessageBox.Show(outputFile, "");
                 byte[] hex = File.ReadAllBytes(dllPath);
                 File.WriteAllText(outputFile, String.Empty);
-                using (StreamWriter sw = new StreamWriter(outputFile))
+                using (StreamWriter sw = new(outputFile))
                 {
                     sw.Write(File.ReadAllText(firstfile));
                     for (int x = 0; x < hex.Length; x++)
@@ -107,7 +107,7 @@ namespace DLLtoHEX
                     sw.Write(File.ReadAllText(secondfile));
                 }
 
-                FileInfo sizebyte = new FileInfo(outputFile);
+                FileInfo sizebyte = new(outputFile);
                 long size_kbyte = sizebyte.Length / 1024;
                 textBox1.Text = ("Output file size: " + size_kbyte.ToString() + " Kb");
 

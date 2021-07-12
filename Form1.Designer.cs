@@ -74,7 +74,7 @@
             this.setSecondFile_b.TabIndex = 3;
             this.setSecondFile_b.Text = "set 2nd file";
             this.setSecondFile_b.UseVisualStyleBackColor = false;
-            this.setSecondFile_b.Click += new System.EventHandler(this.setSecondFile_b_Click);
+            this.setSecondFile_b.Click += new System.EventHandler(this.SetSecondFile_b_Click);
             // 
             // setFirstFile_b
             // 
@@ -87,7 +87,7 @@
             this.setFirstFile_b.TabIndex = 4;
             this.setFirstFile_b.Text = "set 1st file";
             this.setFirstFile_b.UseVisualStyleBackColor = false;
-            this.setFirstFile_b.Click += new System.EventHandler(this.setFirstFile_b_Click);
+            this.setFirstFile_b.Click += new System.EventHandler(this.SetFirstFile_b_Click);
             // 
             // setOutput_b
             // 
@@ -101,7 +101,7 @@
             this.setOutput_b.TabIndex = 5;
             this.setOutput_b.Text = "set output";
             this.setOutput_b.UseVisualStyleBackColor = false;
-            this.setOutput_b.Click += new System.EventHandler(this.setOutput_b_Click);
+            this.setOutput_b.Click += new System.EventHandler(this.SetOutput_b_Click);
             // 
             // radioButton1
             // 
@@ -115,7 +115,7 @@
             this.radioButton1.TabStop = true;
             this.radioButton1.Text = "file";
             this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.RadioButton1_CheckedChanged);
             // 
             // radioButton2
             // 
@@ -128,7 +128,7 @@
             this.radioButton2.TabStop = true;
             this.radioButton2.Text = ".txt";
             this.radioButton2.UseVisualStyleBackColor = true;
-            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            this.radioButton2.CheckedChanged += new System.EventHandler(this.RadioButton2_CheckedChanged);
             // 
             // radioButton3
             // 
@@ -141,7 +141,7 @@
             this.radioButton3.TabStop = true;
             this.radioButton3.Text = ".cpp";
             this.radioButton3.UseVisualStyleBackColor = true;
-            this.radioButton3.CheckedChanged += new System.EventHandler(this.radioButton3_CheckedChanged);
+            this.radioButton3.CheckedChanged += new System.EventHandler(this.RadioButton3_CheckedChanged);
             // 
             // radioButton4
             // 
@@ -154,7 +154,7 @@
             this.radioButton4.TabStop = true;
             this.radioButton4.Text = ".c";
             this.radioButton4.UseVisualStyleBackColor = true;
-            this.radioButton4.CheckedChanged += new System.EventHandler(this.radioButton4_CheckedChanged);
+            this.radioButton4.CheckedChanged += new System.EventHandler(this.RadioButton4_CheckedChanged);
             // 
             // Form1
             // 
