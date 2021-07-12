@@ -45,7 +45,10 @@ namespace DLLtoHEX
                 }
                 sw.Write(File.ReadAllText(secondfile));
             }
-            Application.Exit();
+
+            FileInfo sizebyte = new FileInfo(output);
+            long size_kbyte = sizebyte.Length / 1024;
+            textBox1.Text = (size_kbyte.ToString() + " Kb");
         }
     }
 }
