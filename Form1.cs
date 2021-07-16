@@ -2,6 +2,15 @@
 using System.IO;
 using System.Windows.Forms;
 
+
+/*
+ firstfile content { binary array } secondfile
+
+ for example memject by danielkrupinski
+ 1st file contains everyting before default array, 2nd file everything after that, and outputFile with ".c" as output
+ */
+
+
 namespace DLLtoHEX
 {
     public partial class Form1 : Form
@@ -9,11 +18,38 @@ namespace DLLtoHEX
         public Form1()
         {
             InitializeComponent();
-            textBox1.Text = "Output file size: ";
         }
 
         string dllPath, firstfile, secondfile, outputFolder, FileFormat, outputFile = "DLLtoHEX";
         readonly string[] Formats = { "", ".txt", ".cpp", ".c" };
+        bool fFileSetted = false, sFileSetted = false, oSetted = false;
+
+
+        void FileDialog(Button button, ref string s, ref bool b)
+        {
+            OpenFileDialog open = new()
+            {
+                Filter = "TXT|*.txt;"
+            };
+            if (open.ShowDialog(this) == DialogResult.OK)
+            {
+                button.ForeColor = System.Drawing.Color.Green;
+                button.Text = "file setted";
+                s = open.FileName;
+                b = true;
+            }
+        }
+        void FolderDialog(Button button, ref string s, ref bool b)
+        {
+            FolderBrowserDialog open = new();
+            if (open.ShowDialog(this) == DialogResult.OK)
+            {
+                button.ForeColor = System.Drawing.Color.Green;
+                button.Text = "output setted";
+                s = open.SelectedPath;
+                b = true;
+            }
+        }
 
         private void RadioButton1_CheckedChanged(object sender, EventArgs e)
         {
@@ -35,67 +71,38 @@ namespace DLLtoHEX
 
         private void SetFirstFile_b_Click(object sender, EventArgs e)
         {
-            OpenFileDialog open = new()
-            {
-                Filter = "TXT|*.txt;"
-            };
-
-            if (open.ShowDialog(this) == DialogResult.OK)
-            {
-                setFirstFile_b.ForeColor = System.Drawing.Color.Green;
-                setFirstFile_b.Text = "file setted";
-                firstfile = open.FileName;
-            }
+            FileDialog(setFirstFile_b, ref firstfile, ref fFileSetted);
         }
 
         private void SetSecondFile_b_Click(object sender, EventArgs e)
         {
-
-            OpenFileDialog open = new()
-            {
-                Filter = "TXT|*.txt;"
-            };
-
-            if (open.ShowDialog(this) == DialogResult.OK)
-            {
-                setSecondFile_b.ForeColor = System.Drawing.Color.Green;
-                setSecondFile_b.Text = "file setted";
-                secondfile = open.FileName;
-            }
+            FileDialog(setSecondFile_b, ref secondfile, ref sFileSetted);
         }
 
         private void SetOutput_b_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog open = new();
-            if (open.ShowDialog(this) == DialogResult.OK)
-            {
-                setOutput_b.ForeColor = System.Drawing.Color.Green;
-                setOutput_b.Text = "output setted";
-                outputFolder = open.SelectedPath;
-            }
+            FolderDialog(setOutput_b, ref outputFolder, ref oSetted);
         }
-
 
         private void Main_b_Click(object sender, EventArgs e)
         {
-            if (firstfile.Length != 0 && secondfile.Length != 0 && outputFolder.Length != 0)
+            if (fFileSetted == true && sFileSetted == true && oSetted == true)
             {
                 OpenFileDialog openDialog = new()
                 {
                     Filter = "DLL|*.dll;"
                 };
-
                 if (openDialog.ShowDialog(this) == DialogResult.OK)
                 {
                     dllPath = openDialog.FileName;
                 }
+
                 outputFile = outputFolder + "\\" + outputFile + FileFormat;
-                MessageBox.Show(outputFile, "");
                 byte[] hex = File.ReadAllBytes(dllPath);
-                File.WriteAllText(outputFile, String.Empty);
+                File.WriteAllText(outputFile, String.Empty); //clear output file
                 using (StreamWriter sw = new(outputFile))
                 {
-                    sw.Write(File.ReadAllText(firstfile));
+                    sw.Write(File.ReadAllText(firstfile) + "{ ");
                     for (int x = 0; x < hex.Length; x++)
                     {
                         sw.Write("0x");
@@ -104,22 +111,42 @@ namespace DLLtoHEX
                         if (((x + 1) % 16) == 0)
                             sw.WriteLine();
                     }
-                    sw.Write(File.ReadAllText(secondfile));
+                    sw.Write("};" + '\n' + File.ReadAllText(secondfile));
                 }
 
                 FileInfo sizebyte = new(outputFile);
-                long size_kbyte = sizebyte.Length / 1024;
-                textBox1.Text = ("Output file size: " + size_kbyte.ToString() + " Kb");
+                textBox1.Text = (textBox1.Text + (sizebyte.Length / 1024).ToString() + " Kb");
 
-                DialogResult result = MessageBox.Show("Exit?", "DLLtoHEX", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result == DialogResult.Yes)
+                MessageBox.Show("Output path:" + '\n' + outputFile, "DLLtoHEX", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DialogResult dResult = MessageBox.Show("Exit?", "DLLtoHEX", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dResult == DialogResult.Yes)
                 {
                     Application.Exit();
                 }
             }
-            else
+            else if (fFileSetted == false)
             {
-                MessageBox.Show("Smth wrong", "DLLtoHEX");
+                DialogResult dResult = MessageBox.Show("First file not setted, set it now?", "DLLtoHEX", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dResult == DialogResult.Yes)
+                {
+                    FileDialog(setFirstFile_b, ref firstfile, ref fFileSetted);
+                }
+            }
+            else if (sFileSetted == false)
+            {
+                DialogResult dResult = MessageBox.Show("Second file not setted, set it now?", "DLLtoHEX", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dResult == DialogResult.Yes)
+                {
+                    FileDialog(setSecondFile_b, ref secondfile, ref sFileSetted);
+                }
+            }
+            else if (oSetted == false)
+            {
+                DialogResult dResult = MessageBox.Show("Output file not setted, set it now?", "DLLtoHEX", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dResult == DialogResult.Yes)
+                {
+                    FolderDialog(setOutput_b, ref outputFolder, ref oSetted);
+                }
             }
         }
     }
